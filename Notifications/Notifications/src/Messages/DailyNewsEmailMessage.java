@@ -1,0 +1,10 @@
+package Messages;
+
+public class DailyNewsEmailMessage implements message {
+
+	@Override
+	public String prepareMessage(String placeHolders[]) {
+		// code to replace place holders of this type
+		return "New news added";
+	}
+}
