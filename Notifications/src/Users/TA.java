@@ -1,47 +1,20 @@
 package Users;
 
-public class TA {
-	String name;
+import Course.Course;
+import Gateways.EmailGateway;
+import Gateways.SMSGateway;
+import Gateways.GatewayContext;
+
+public class TA extends Users {
+
 	String department;
-	String email;
-	String phoneNumber;
-	
-	
+	String message;
+	String teacher = "TA";
+
+	Course courses;
 
 	public TA(String name, String department, String email, String phoneNumber) {
-		super();
-		this.name = name;
-		this.department = department;
-		this.email = email;
-		this.phoneNumber = phoneNumber;
-	}
-
-
-	public String getEmail() {
-		return email;
-	}
-
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-
-	public String getPhoneNumber() {
-		return phoneNumber;
-	}
-
-
-	public void setPhoneNumber(String phoneNumber) {
-		this.phoneNumber = phoneNumber;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
+		super(name, email, phoneNumber);
 	}
 
 	public String getDepartment() {
@@ -51,10 +24,64 @@ public class TA {
 	public void setDepartment(String department) {
 		this.department = department;
 	}
-	
+
+	@Override
+	public void daliyNewsEmailGateway() {
+		m.getMessage("DailyNewsEmailMessage");
+		c = new GatewayContext(new EmailGateway());
+		c.executeStrategy(m, teacher);
+
+	}
+
+	@Override
+	public void daliyNewsSMSGateway() {
+		m.getMessage("DailyNewsMobileMessage");
+		c = new GatewayContext(new SMSGateway());
+		c.executeStrategy(m, teacher);
+	}
+
+	@Override
+	public void gradesAnnouncementEmailGateway() {
+		m.getMessage("GradesAnnouncementEmailMessage");
+		c = new GatewayContext(new EmailGateway());
+		c.executeStrategy(m, teacher);
+	}
+
+	@Override
+	public void gradesAnnouncementSMSGateway() {
+		m.getMessage("GradesAnnouncementMobileMessage");
+		c = new GatewayContext(new SMSGateway());
+		c.executeStrategy(m, teacher);
+	}
+
+	@Override
+	public void taskAddedEmailGateway() {
+		m.getMessage("TaskAddedEmailMessage");
+		c = new GatewayContext(new EmailGateway());
+		c.executeStrategy(m, teacher);
+	}
+
+	@Override
+	public void taskAddedSMSGateway() {
+		m.getMessage("TaskAddedMobileMessage");
+		c = new GatewayContext(new SMSGateway());
+		c.executeStrategy(m, teacher);
+	}
+
+	@Override
+	public void update() {
+		// do some logic
+		System.out.println("New tasks: " + this.course.getAssignment());
+		System.out.println("New grades: " + this.course.getGrades());
+		System.out.println("New daliy news: " + this.course.getNews());
+	}
+
 	public void notifyTA(String message) {
 		// do some stuff
-		
+		this.message = message;
+		this.courses.subscribeTAForEmailNotification(this);
+		this.courses.subscribeTAForSMSNotification(this);
+
 	}
-	
+
 }

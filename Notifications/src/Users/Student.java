@@ -1,60 +1,88 @@
 package Users;
 
-public class Student {
-	String name;
-	int Id;
-	String email;
-	String phoneNumber;
-	
-	
-	
+import Course.Course;
+import Gateways.EmailGateway;
+import Gateways.SMSGateway;
+import Gateways.GatewayContext;
+
+public class Student extends Users {
+
+	int id;
+	String message;
+	String studentt = "Student";
+
+	Course courses;
+
 	public Student(String name, int id, String email, String phoneNumber) {
-		super();
-		this.name = name;
-		Id = id;
-		this.email = email;
-		this.phoneNumber = phoneNumber;
+		super(name, email, phoneNumber);
+		this.id = id;
 	}
 
+	@Override
+	public void daliyNewsEmailGateway() {
+		m.getMessage("DailyNewsEmailMessage");
+		c = new GatewayContext(new EmailGateway());
+		c.executeStrategy(m, studentt);
 
-	public String getEmail() {
-		return email;
 	}
 
-
-	public void setEmail(String email) {
-		this.email = email;
+	@Override
+	public void daliyNewsSMSGateway() {
+		m.getMessage("DailyNewsMobileMessage");
+		c = new GatewayContext(new SMSGateway());
+		c.executeStrategy(m, studentt);
 	}
 
-
-	public String getPhoneNumber() {
-		return phoneNumber;
+	@Override
+	public void gradesAnnouncementEmailGateway() {
+		m.getMessage("GradesAnnouncementEmailMessage");
+		c = new GatewayContext(new EmailGateway());
+		c.executeStrategy(m, studentt);
 	}
 
-
-	public void setPhoneNumber(String phoneNumber) {
-		this.phoneNumber = phoneNumber;
+	@Override
+	public void gradesAnnouncementSMSGateway() {
+		m.getMessage("GradesAnnouncementMobileMessage");
+		c = new GatewayContext(new SMSGateway());
+		c.executeStrategy(m, studentt);
 	}
 
-	public String getName() {
-		return name;
+	@Override
+	public void taskAddedEmailGateway() {
+		m.getMessage("TaskAddedEmailMessage");
+		c = new GatewayContext(new EmailGateway());
+		c.executeStrategy(m, studentt);
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	@Override
+	public void taskAddedSMSGateway() {
+		m.getMessage("TaskAddedMobileMessage");
+		c = new GatewayContext(new SMSGateway());
+		c.executeStrategy(m, studentt);
+	}
+
+	@Override
+	public void update() {
+		// do some logic
+		System.out.println("New tasks: " + this.course.getAssignment());
+		System.out.println("New grades: " + this.course.getGrades());
+		System.out.println("New daliy news: " + this.course.getNews());
 	}
 
 	public int getId() {
-		return Id;
+		return id;
 	}
 
 	public void setId(int id) {
-		Id = id;
+		this.id = id;
 	}
-	
-	
+
 	public void notifyStudent(String message) {
 		// do some stuff
+		this.message = message;
+		this.courses.subscribeStudentForEmailNotification(this);
+		this.courses.subscribeStudentForSMSNotification(this);
+
 	}
-	
+
 }

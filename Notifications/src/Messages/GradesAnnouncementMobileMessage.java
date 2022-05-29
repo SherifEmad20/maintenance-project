@@ -1,10 +1,11 @@
 package Messages;
 
-public class GradesAnnouncementMobileMessage {
+public class GradesAnnouncementMobileMessage implements Message{
 
-	public String prepareMessage(String placeHolders[]) {
+	@Override
+	public String prepareMessage(String[] placeHolders) {
 		// code to replace place holders of this type
-		return "";
+		return "Dear{Student X}, The grade of task {Task X} is announced and you can find it at students grades";
 	}
 	
 	public boolean verifyGrades() {
