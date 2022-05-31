@@ -1,6 +1,6 @@
 package Messages;
 
-public class messageFactory {
+public class MessageFactory {
 
 	public Message getMessage(String messageType) {
 		if (messageType == null) {
